@@ -1,9 +1,9 @@
 ﻿using System.Web.Routing;
 using AttributeRouting.Web.Mvc;
 
-[assembly: WebActivator.PreApplicationStartMethod(typeof(OnTimeSocialConnect.AttributeRoutingConfig), "Start")]
+[assembly: WebActivator.PreApplicationStartMethod(typeof(iphonefix.AttributeRoutingConfig), "Start")]
 
-namespace OnTimeSocialConnect
+namespace iphonefix
 {
     public static class AttributeRoutingConfig
     {

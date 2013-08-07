@@ -1,3 +1,11 @@
-﻿ .borderOverride {
+﻿ #masternavbar{
     border-radius:0px;
 }
+
+ #navigationbuttongroup {
+     padding-right: 25px;
+ }
+
+ body{
+     padding: 70px;
+ }

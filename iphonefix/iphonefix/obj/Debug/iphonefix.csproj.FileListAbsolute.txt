@@ -91,3 +91,4 @@ C:\iphonefix\iphonefix\iphonefix\bin\AttributeRouting.Web.Mvc.xml
 C:\iphonefix\iphonefix\iphonefix\bin\WebActivator.pdb
 C:\iphonefix\iphonefix\iphonefix\bin\AttributeRouting.Web.dll
 C:\iphonefix\iphonefix\iphonefix\bin\AttributeRouting.Web.xml
+C:\iphonefix\iphonefix\iphonefix\obj\Debug\iphonefix.csprojResolveAssemblyReference.cache

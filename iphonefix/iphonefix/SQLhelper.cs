@@ -6,12 +6,16 @@ using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Web;
 
 namespace iphonefix
 {
+
 	public class SQLhelper
 	{
+		#region Encryption Methods
+
 		private static readonly byte[] keyb =
 		{
 			121,	143,	42,	214,	218,
@@ -83,6 +87,9 @@ namespace iphonefix
 				decrypted = decrypted.Replace("\0", string.Empty);
 			return decrypted;
 		}
+		#endregion
+
+		#region Databse Config Methods 
 
 		private static SqlConnection ConnectToDatabase()
 		{
@@ -93,5 +100,139 @@ namespace iphonefix
 															"database=" + Decrypt(ConfigurationManager.AppSettings["database"]) + ";");
 
 		}
+
+		public static void LoadTableAndSprocs()
+		{
+			//load all files and produce a single string
+			DirectoryInfo SqlDir = new DirectoryInfo(HttpContext.Current.Server.MapPath("/Databasesprocs/"));
+			FileInfo[] SqlFiles = null;
+
+
+			try
+			{
+				SqlFiles = SqlDir.GetFiles();
+			}
+			catch (UnauthorizedAccessException exc)
+			{
+				//this fires if the program does not have permission to access the file for some reason
+			}
+			catch (DirectoryNotFoundException exc)
+			{
+				//ha ha how would you even reach this block i mean really
+			}
+
+			if (SqlFiles == null)//something is broken if this is still true
+			{
+				return;
+			}
+
+			string scripts = "";
+
+			foreach (FileInfo fi in SqlFiles)
+			{
+				try
+				{
+					//open a file and append its contents to scripts
+					using (FileStream fs = new FileStream(fi.DirectoryName + "\\" + fi.Name, FileMode.Open))
+					{
+						using (StreamReader sr = new StreamReader(fs))
+						{
+							scripts = scripts + sr.ReadToEnd() + "\n";
+						}
+					}
+				}
+				catch (Exception exc) { }
+
+			}
+
+
+
+			string[] commands = Regex.Split(scripts, "\r\n[\t ]*GO");
+
+			SqlCommand cmd;
+
+
+			foreach (string commandtext in commands)
+			{
+				cmd = new SqlCommand(String.Empty, SQLhelper.ConnectToDatabase());
+				try
+				{
+					cmd.Connection.Open();
+
+					if (commandtext.Trim() == string.Empty)
+					{
+						continue;
+					}
+					cmd.CommandText = commandtext;
+					cmd.ExecuteNonQuery();
+					cmd.Connection.Close();
+				}
+				catch (Exception e) { }
+
+			}
+		}
+
+	
+	#endregion
+
+		#region Database Manipulation Methods
+
+		public static bool AddCustomerToDatabase(string name, string email, string phonenumber, string phonetype)
+		{
+			//Encrypt information for database
+			name = Encrypt(name);
+			email = Encrypt(email);
+			phonenumber = Encrypt(phonenumber);
+			phonetype = Encrypt(phonetype);
+
+			SqlTransaction transaction;
+
+			using (SqlConnection connection = ConnectToDatabase())
+			{
+				try
+				{
+					connection.Open();
+				}
+				catch (Exception)
+				{
+					return false;
+				}
+
+
+				SqlCommand command = connection.CreateCommand();
+
+				transaction = connection.BeginTransaction("Adding customer to database");
+
+				command.Connection = connection;
+				command.Transaction = transaction;
+				try
+				{
+					command.CommandText = string.Format("EXEC [dbo].[AddCustomerToDatabase] '{0}', '{1}', '{2}', '{3}', '{4}', '{5}'", name, email, phonenumber, phonetype);
+
+					command.ExecuteNonQuery();
+
+					transaction.Commit();
+
+
+					return true;
+				}
+
+				catch (Exception)
+				{
+					try
+					{
+						transaction.Rollback();
+						return false;
+					}
+					catch (Exception)
+					{
+						return false;
+					}
+				}
+			}
+		}
+
+		#endregion
 	}
+
 }

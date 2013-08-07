@@ -14,13 +14,18 @@
    <script type="text/javascript" src="~/Scripts/toastr.min.js">
    </script>
 
-    <LINK href="~/Content/toastr.min.css" rel="stylesheet" type="text/css" />
+    <link href="~/Content/toastr.min.css" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="~/Content/bootstrap.min.css" type="text/css">
+    <link rel="stylesheet" href="~/Content/calendar.css" type="text/css">
 </head>
 
 <body>
-    <div class="navbar navbar-inverse">
+    <div class="navbar navbar-inverse navbar-fixed-top" id="masternavbar">
     <div class="navbar-inner borderOverride">
-        <a class="brand active" href="#" id="navbarlabel">Derrick Rahbar</a>
+        <a class="navbar-brand active" href="#" id="navbarlabel">iFoneFix</a>
+        <ul class="nav navbar-nav">
+            <li id="Calendarlink"><a href="#">Calendar</a></li>
+        </ul>
         
     </div>
 </div>
@@ -33,6 +38,10 @@
 <script>
     $('#navbarlabel').click(function () {
         window.location = "@iphonefix.Infrastructure.Utils.GetSiteRoot()";
+    });
+
+    $('#Calendarlink').click(function () {
+        window.location = "@iphonefix.Infrastructure.Utils.GetSiteRoot()" + "home/calendar";
     });
 </script>   
    

@@ -15,18 +15,9 @@ namespace iphonefix.Controllers
             return View();
         }
 
-        public ActionResult About()
+        public ActionResult Calendar()
         {
-            ViewBag.Message = "Your app description page.";
-
-            return View();
-        }
-
-        public ActionResult Contact()
-        {
-            ViewBag.Message = "Your contact page.";
-
-            return View();
+            return PartialView();
         }
     }
 }

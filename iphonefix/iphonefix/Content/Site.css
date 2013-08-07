@@ -10,6 +10,10 @@
      width : 100%;
  }
 
+ #appointmentsection{
+     padding-left:10%;
+ }
+
  body{
      padding: 70px;
  }

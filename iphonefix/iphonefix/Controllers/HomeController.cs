@@ -15,9 +15,6 @@ namespace iphonefix.Controllers
             return View();
         }
 
-        public ActionResult Calendar()
-        {
-            return PartialView();
-        }
+       
     }
 }

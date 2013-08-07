@@ -19,12 +19,12 @@
     <link rel="stylesheet" href="~/Content/calendar.css" type="text/css">
 </head>
 
-<body>
+<body data-spy="scroll" data-target="#masternavbar">
     <div class="navbar navbar-inverse navbar-fixed-top" id="masternavbar">
     <div class="navbar-inner borderOverride">
         <a class="navbar-brand active" href="#" id="navbarlabel">iFoneFix</a>
-        <ul class="nav navbar-nav">
-            <li id="Calendarlink"><a href="#">Calendar</a></li>
+        <ul id="navbarlinks" class="nav navbar-nav">
+            <li id="Calendarlink"><a href="#calenderSection">Calendar</a></li>
         </ul>
         
     </div>
@@ -40,10 +40,25 @@
         window.location = "@iphonefix.Infrastructure.Utils.GetSiteRoot()";
     });
 
-    $('#Calendarlink').click(function () {
-        window.location = "@iphonefix.Infrastructure.Utils.GetSiteRoot()" + "home/calendar";
+    $.when($(window).scrollTop() === 0).done(function () {
+        $('#Calendarlink').addClass('active');
     });
-</script>   
+
+    $(window).scroll(function () {
+        $('ul #navbarlinks li.active').removeClass('active');
+
+        var scroll = $(window).scrollTop();
+
+        if (scroll <= 500) {
+            $('#Calendarlink').addClass('active');
+        }
+
+    });
+
+
+
+</script> 
+     <script src="http://twitter.github.com/bootstrap/assets/js/bootstrap-scrollspy.js"></script>  
    
 </body>
 </html>

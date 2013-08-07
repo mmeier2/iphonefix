@@ -6,6 +6,10 @@
      padding-right: 25px;
  }
 
+ #calendar {
+     width : 100%;
+ }
+
  body{
      padding: 70px;
  }

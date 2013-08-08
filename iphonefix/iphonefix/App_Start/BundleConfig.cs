@@ -8,7 +8,7 @@ namespace iphonefix
         // For more information on Bundling, visit http://go.microsoft.com/fwlink/?LinkId=254725
         public static void RegisterBundles(BundleCollection bundles)
         {
-            bundles.Add(new ScriptBundle("~/bundles/iFoneFix").Include("~/Scripts/ifonefix.js"));
+            bundles.Add(new ScriptBundle("~/bundles/iFoneFix").Include("~/Scripts/ifonefix.js", "~/Scripts/utils.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/jquery").Include(
                         "~/Scripts/jquery-{version}.js"));

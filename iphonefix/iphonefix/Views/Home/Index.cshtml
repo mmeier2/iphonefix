@@ -30,7 +30,7 @@
 
                 </div>
                 <div class="cal-month-box">
-                    <div data-bind="foreach: { data: weeksArray, as: 'weeks' }">
+                    <div id="days" data-bind="foreach: { data: weeksArray, as: 'weeks' }">
                     <div class="cal-row-fluid">
                         <div data-bind="foreach: {data: $data, as: 'days'}">
                         <div class="cal-span1 cal-cell">

@@ -41,6 +41,7 @@
         viewModel.dayArrayrow6 = ko.observableArray();
 
 
+
         //populating the array for the first row specifying first day and date 
         var found = 0;
         var currentday = 0;
@@ -123,25 +124,53 @@
 
 
 
+     
+      
 
 
-        /*
-        MIGHT USE
-
-        viewModel.MonthHtml= ko.observable('﻿<div class="row"><div class="span9"><div id="calendar"><div class="cal-row-fluid cal-row-head"><div class="cal-span1">Sunday</div><div class="cal-span1">Monday</div><div class="cal-span1">Tuesday</div><div class="cal-span1">Wednesday</div><div class="cal-span1">Thursday</div><div class="cal-span1">Friday</div><div class="cal-span1">Saturday</div></div></div></div><div class="span3" id="appointmentsection"><h4>Appoinments</h4></div></div></div>');
-        viewModel.YearHtml = ko.observable('<div><h2>YEAR</h2></div>');
         
-        
-        viewModel.CalendarHtml = ko.observable(viewModel.MonthHtml());
-
-        //use <div data-bind="html: CalendarHtml"></div>
-        */
         ko.applyBindings(viewModel);
 
-        return viewModel;
+        $.fn.sequenceEqual = function(compareTo) {
+            if (!compareTo || !compareTo.length || this.length !== compareTo.length) {
+                return false;
+            }
+            for (var i = 0, length = this.length; i < length; i++) {
+                if (this[i] !== compareTo[i]) 
+                    return false;
+            }
+        
+        return true;
+    }; 
 
-    }
 
+    //when a cell is clicked, a popup will show with appointment signup
+    $('#days').delegate(".cal-cell", "click", function () {
+        var val = ko.contextFor(this).$data.val
+        var name = ko.contextFor(this).$data.name;
+
+        $('#days .active').removeClass('active');
+
+        if(!$('#days .active').sequenceEqual($(this)))
+            $(this).addClass('active');
+
+        //not a valid day
+        if (val === -1 || val < viewModel.currentDay)
+            return;
+
+        //show appt form
+        $.modalPopup();
+
+
+    });
+
+    return viewModel;
+
+},
+
+
+    
+   
 
 
 

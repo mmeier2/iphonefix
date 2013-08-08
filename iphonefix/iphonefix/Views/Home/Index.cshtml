@@ -1,4 +1,4 @@
-﻿<div id="calendarSection">
+﻿﻿<div id="calendarSection">
     <div class="page-header">
         <div class="pull-right form-inline">
             <div class="btn-group" id="navigationbuttongroup">
@@ -13,10 +13,9 @@
                 <button class="btn btn-info" id="daybutton">Day</button>
             </div>
         </div>
-        <h3>Year </h3>
+        <h3><span data-bind="text: selectedMonthName"></span> <span data-bind="text: selectedYear"></span></h3>
     </div>
 
-   
     <div class="row">
         <div class="span9">
             <div id="calendar">
@@ -30,26 +29,42 @@
                     <div class="cal-span1">Saturday</div>
 
                 </div>
+                <div class="cal-month-box">
+                    <div data-bind="foreach: { data: weeksArray, as: 'weeks' }">
+                    <div class="cal-row-fluid">
+                        <div data-bind="foreach: {data: $data, as: 'days'}">
+                        <div class="cal-span1 cal-cell">
+                           <span class="pull-right" data-bind=" text: days.name , value: days.val"></span>
+                        </div>
+                   </div>
+                        </div>
+                        </div>
+                   
+                 
+                </div>
             </div>
+
         </div>
         <div class="span3" id="appointmentsection">
             <h4>Appoinments</h4>
-        </div>
-    </div>
-</div>
 
+        </div>
+</div>
 <script>
 
     //https://github.com/Serhioromano/bootstrap-calendar reference for calendar
     $('#monthbutton').addClass("active");
 
+    $('.cal-cell').click(function () {
+        
+        $('.cal-cell.active').removeClass('active');
+        $(this).addClass('active');
+    });
+
     $('#calendarviewbtn button').click(function () {
         $('#calendarviewbtn button.active').removeClass('active');
+        $(this).addClass("active");
 
-        var id = this.id;
-
-        $('#' + id).addClass("active");
-        
     });
 
 </script>

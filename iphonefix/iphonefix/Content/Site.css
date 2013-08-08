@@ -14,6 +14,10 @@
      padding-left:10%;
  }
 
+ .cal-cell.active {
+     background-color :#ebebeb;
+ }
+
  body{
      padding: 70px;
  }

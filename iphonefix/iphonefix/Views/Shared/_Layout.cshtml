@@ -8,12 +8,16 @@
     @Scripts.Render("~/bundles/modernizr")
     @Styles.Render("~/Content/bootstrap")
     @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/knockout")
     @Scripts.Render("~/bundles/bootstrap")
+    @Scripts.Render("~/bundles/iFoneFix")
      @Styles.Render("~/Content/css")
 
    <script type="text/javascript" src="~/Scripts/toastr.min.js">
    </script>
 
+     <script type="text/javascript" src="~/Scripts/date.js">
+   </script>
     <link href="~/Content/toastr.min.css" rel="stylesheet" type="text/css" />
     <link rel="stylesheet" href="~/Content/bootstrap.min.css" type="text/css">
     <link rel="stylesheet" href="~/Content/calendar.css" type="text/css">
@@ -36,6 +40,11 @@
 
        @RenderSection("scripts", required: false)
 <script>
+
+    var viewModel = window.iFoneFix.loadData();
+
+  
+
     $('#navbarlabel').click(function () {
         window.location = "@iphonefix.Infrastructure.Utils.GetSiteRoot()";
     });

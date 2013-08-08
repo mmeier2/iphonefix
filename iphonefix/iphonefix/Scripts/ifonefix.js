@@ -58,6 +58,9 @@
             }
         }
 
+        //increment the current day from the last entry in row1
+        currentday++;
+
         //populating the rest of the week rows
         for (var i = 0 ; i < 7 ; i++)
         {
@@ -92,10 +95,15 @@
             else
                 viewModel.dayArrayrow5.push({ name: "", val: -1 });
         }
+
+        //boolean to see if last row is ever populated
+        var populated = false;
+
         for (var i = 0 ; i < 7 ; i++) {
             if (currentday <= viewModel.selectedDaysInMonth()) {
                 viewModel.dayArrayrow6.push({ name: currentday, val: currentday });
                 currentday++;
+                populated = true;
             }
             else
                 viewModel.dayArrayrow6.push({ name: "", val: -1 });
@@ -109,7 +117,9 @@
         viewModel.weeksArray.push(viewModel.dayArrayrow3());
         viewModel.weeksArray.push(viewModel.dayArrayrow4());
         viewModel.weeksArray.push(viewModel.dayArrayrow5());
-        viewModel.weeksArray.push(viewModel.dayArrayrow6());
+        //depending on the month, the last row might not be populate, if so dont add to the month array
+        if(populated)
+            viewModel.weeksArray.push(viewModel.dayArrayrow6());
 
 
 

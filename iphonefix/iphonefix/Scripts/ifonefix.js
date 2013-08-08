@@ -131,6 +131,8 @@
         
         ko.applyBindings(viewModel);
 
+        $('#days .cal-cell [value = ' + viewModel.selectedDay() + ']').parent().addClass('active');
+
         $.fn.sequenceEqual = function(compareTo) {
             if (!compareTo || !compareTo.length || this.length !== compareTo.length) {
                 return false;

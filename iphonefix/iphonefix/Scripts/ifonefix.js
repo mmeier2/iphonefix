@@ -4,6 +4,9 @@
 
         var viewModel = {}
         var dateobject = new Date();
+
+        //the current cal-cell that has a popup
+        viewModel.currentHover = ko.observable();
         
 
         viewModel.currentDay = dateobject.getDate();
@@ -165,6 +168,27 @@
 
 
     });
+
+    $('#days').delegate(".cal-cell", "hover", function () {
+       
+        $(viewModel.currentHover()).popover('hide');
+
+        if (ko.contextFor(this).$data.val !== -1) {
+
+            viewModel.currentHover(this);
+
+            $(this).popover({
+                title: "test",
+                placement: "bottom",
+                animation: true
+            });
+
+            $(this).popover('show');
+        }
+       
+    });
+
+    
 
     return viewModel;
 

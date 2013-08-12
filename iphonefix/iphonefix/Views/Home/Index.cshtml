@@ -33,7 +33,7 @@
                     <div id="days" data-bind="foreach: { data: weeksArray, as: 'weeks' }">
                     <div class="cal-row-fluid">
                         <div data-bind="foreach: {data: $data, as: 'days'}">
-                        <div class="cal-span1 cal-cell">
+                        <div class="cal-span1 cal-cell" rel="popover">
                            <span class="pull-right" data-bind=" text: days.name , value: days.val"></span>
                         </div>
                    </div>

@@ -43,6 +43,8 @@
         viewModel.dayArrayrow5 = ko.observableArray();
         viewModel.dayArrayrow6 = ko.observableArray();
 
+        
+       
 
 
         //populating the array for the first row specifying first day and date 
@@ -126,7 +128,19 @@
             viewModel.weeksArray.push(viewModel.dayArrayrow6());
 
 
+        //ajax request made to return appointments in database
+        $.get('/home/getappointments', function (data) {
+            viewModel.appointments = ko.observable(data)
+        });
+        
 
+        //ko.computed functions
+
+
+        //updates the month name whenever the selected month changes
+        viewModel.updateMonthName = ko.computed(function () {
+            this.selectedMonthName(monthNames[this.selectedMonth()]);
+        }, viewModel);
      
       
 
@@ -145,57 +159,58 @@
                     return false;
             }
         
-        return true;
-    }; 
+            return true;
+        }; 
 
 
-    //when a cell is clicked, a popup will show with appointment signup
-    $('#days').delegate(".cal-cell", "click", function () {
-        var val = ko.contextFor(this).$data.val
-        var name = ko.contextFor(this).$data.name;
+        //when a cell is clicked, a popup will show with appointment signup
+        $('#days').delegate(".cal-cell", "click", function () {
+            var val = ko.contextFor(this).$data.val
+            var name = ko.contextFor(this).$data.name;
 
-        $('#days .active').removeClass('active');
-
-        if(!$('#days .active').sequenceEqual($(this)))
-            $(this).addClass('active');
-
-        //not a valid day
-        if (val === -1 || val < viewModel.currentDay)
-            return;
-
-        //show appt form
-        $.modalPopup();
+            viewModel.selectedDay(name);
 
 
-    });
+            //not a valid day
+            if (val === -1 || val < viewModel.currentDay)
+                return;
 
-    $('#days').delegate(".cal-cell", "hover", function () {
+            //show appt form
+            $('#appointmentmodal').modal({ show: true });
+
+        });
+
+        $('#days').delegate(".cal-cell", "hover", function () {
        
-        $(viewModel.currentHover()).popover('hide');
+            $(viewModel.currentHover()).popover('hide');
 
-        if (ko.contextFor(this).$data.val !== -1) {
+            if (ko.contextFor(this).$data.val !== -1) {
 
-            viewModel.currentHover(this);
+                viewModel.currentHover(this);
 
-            $(this).popover({
-                title: "test",
-                placement: "bottom",
-                animation: true
-            });
+                $(this).popover({
+                    title: "test",
+                    placement: "bottom",
+                    animation: true
+                });
 
-            $(this).popover('show');
-        }
+                $(this).popover('show');
+            }
        
-    });
+        });
 
     
 
-    return viewModel;
+        return viewModel;
 
-},
+    },
 
 
-    
+    /// <reference path="jquery-1.4.4.js" />
+    /// <reference path="jquery.validate.js" />
+    /// <reference path="jquery.validate.unobtrusive.js" />
+ 
+
    
 
 

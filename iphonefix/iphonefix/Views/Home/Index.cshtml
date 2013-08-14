@@ -1,4 +1,6 @@
-﻿﻿<div id="calendarSection">
+﻿﻿
+
+<div id="calendarSection">
     <div class="page-header">
         <div class="pull-right form-inline">
             <div class="btn-group" id="navigationbuttongroup">
@@ -13,10 +15,11 @@
                 <button class="btn btn-info" id="daybutton">Day</button>
             </div>
         </div>
-        <h3><span data-bind="text: selectedMonthName"></span> <span data-bind="text: selectedYear"></span></h3>
+        <h3><span data-bind="text: selectedMonthName"></span> <span data-bind="    text: selectedYear"></span></h3>
     </div>
 
-    <div class="row">
+   
+     <div class="row">
         <div class="span9">
             <div id="calendar">
                 <div class="cal-row-fluid cal-row-head">
@@ -31,16 +34,16 @@
                 </div>
                 <div class="cal-month-box">
                     <div id="days" data-bind="foreach: { data: weeksArray, as: 'weeks' }">
-                    <div class="cal-row-fluid">
-                        <div data-bind="foreach: {data: $data, as: 'days'}">
-                        <div class="cal-span1 cal-cell" rel="popover">
-                           <span class="pull-right" data-bind=" text: days.name , value: days.val"></span>
+                        <div class="cal-row-fluid">
+                            <div data-bind="foreach: { data: $data, as: 'days' }">
+                                <div class="cal-span1 cal-cell" rel="popover">
+                                    <span class="pull-right" data-bind=" text: days.name, value: days.val"></span>
+                                </div>
+                            </div>
                         </div>
-                   </div>
-                        </div>
-                        </div>
-                   
-                 
+                    </div>
+
+
                 </div>
             </div>
 
@@ -49,23 +52,165 @@
             <h4>Appoinments</h4>
 
         </div>
-</div>
-<script>
+    </div>
+    </div>
+    <div class="modal hide fade" id="appointmentmodal">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            <h3>Create an Appointment</h3>
+        </div>
+        <div class="modal-body">
+            <form id="applicationform">
+                <fieldset>
+                    <legend><span data-bind="text: selectedMonthName"></span> <span data-bind="    text: selectedDay"></span>, <span data-bind="    text: selectedYear"></span></legend>
+                    <div class="row row-fluid appointmentrow">
+                        <div class="span6">
+                            <label>First Name</label>
+                            <input type="text" id="firstname"/>
+                                 <label>Last Name</label>
+                            <input type="text" id="lastname" />
+                        </div>
+                        <div class="span6">
+                            <label>Email</label>
+                            <input type="text" id="email" />
+                       
+                            <label>Phone Number</label>
+                            <input type="text" id="phonenumber"/>
+                        </div>
+                    </div>
+                    
+                    <div class="row row-fluid appointmentrow">
+                        <label>iPhone Type</label>
+                        <select id="phonetype">
+                        <option value="4">iPhone 4</option>
+                        <option value="4s">iPhone 4s</option>
+                        <option value="5">iPhone 5</option>
+                    </select>
+                        </div>
+                    <div class="submission">
+                    <button class="btn btn-primary" id="submitbutton" style="text-align:center">Submit</button>
+                        </div>
+                </fieldset>
+            </form>
 
-    //https://github.com/Serhioromano/bootstrap-calendar reference for calendar
-    $('#monthbutton').addClass("active");
+            <div class="alert alert-error fade in" id="appointmenterror" style="display:none">
+               <span> <strong>Error</strong> <span id="errortext">Please fill out all of the entries before submitting</span></span>
+            </div>
+        </div>
+    </div>
 
-    $('.cal-cell').click(function () {
+@if (ViewBag.appointmentredirect)
+{ 
+    <div class="modal hide fade" id="confirmationmodal">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            <h3>Error</h3>
+        </div>
+        <div class="modal-body" id="confirmationmodalbody">
+            <span id="modalmessage"></span>
+            
+        </div>
+    </div>
+    
+    if (ViewBag.success)
+    {
+        <script>
+            $('#modalmessage').text("Congratulations you have booked an appointment with the following information:");
         
-        $('.cal-cell.active').removeClass('active');
-        $(this).addClass('active');
+            $('#confirmationmodalbody').append('<div class="row"><div class="span6"><label>Name</label><p>@Session["name"]</p><label>Email</label><p>@Session["email"]</p></div><div class="span6"><label>Phone Number</label><p>@Session["phonenumber"]</p><label>Phone Type</label><p>@Session["phonetype"]</p></div></div>');
+        </script>
+         
+    }
+
+
+if (!ViewBag.success)
+{ 
+    
+    
+    <script>
+        $('#confirmationmodal').modal({ show: true });
+        $('#modalmessage').text("We're sorry, an error has occured while booking your appointment. Please try again.");
+
+       
+    </script>
+}
+
+<script>
+    $('#confirmationmodal').on('hidden', function () {
+        window.location = "@iphonefix.Infrastructure.Utils.GetSiteRoot()";
     });
-
-    $('#calendarviewbtn button').click(function () {
-        $('#calendarviewbtn button.active').removeClass('active');
-        $(this).addClass("active");
-
-    });
-
 </script>
+}
+    <script>
+      
 
+
+        $('#submitbutton').click(function (e) {
+            //prevents the default action of a form submit button
+            e.preventDefault();
+            var completed = true;
+
+            var fname = $('#firstname').val();
+            var lname = $('#lastname').val();
+            var email = $('#email').val();
+            var phonenumber = $('#phonenumber').val();
+            var phonetype = $('#phonetype').val();
+
+          
+
+            if(fname === ''){
+                $('#firstname').addClass('emptyfield');
+                completed = false;
+        }
+        else
+                $('#firstname').removeClass('emptyfield');
+
+            if(lname === ''){
+                $('#lastname').addClass('emptyfield');
+                completed = false;
+        }
+        else
+                $('#lastname').removeClass('emptyfield');
+
+            if(email === ''){
+                $('#email').addClass('emptyfield');
+                completed = false;
+        }
+        else
+                $('#email').removeClass('emptyfield');
+            if(phonenumber === ''){
+                $('#phonenumber').addClass('emptyfield');
+                completed = false;
+        }
+        else 
+                $('#phonenumber').removeClass('emptyfield');
+            if (completed) {
+                $('#appointmenterror').hide();
+                window.location = "@iphonefix.Infrastructure.Utils.GetSiteRoot()" + "Home/processapplication?fname=" + fname + "&lname=" + lname + "&email=" + email + "&phonenumber=" + phonenumber + "&phonetype=" + phonetype;                
+        }
+        else
+                $('#appointmenterror').show();
+        });
+
+        $('#appointmentmodal').on('hide', function () {
+            $('input.emptyfield').removeClass('emptyfield');
+            $('#appointmenterror').hide();
+        });
+
+
+        //https://github.com/Serhioromano/bootstrap-calendar reference for calendar
+        $('#monthbutton').addClass("active");
+
+        $('.cal-cell').click(function () {
+
+            $('.cal-cell.active').removeClass('active');
+            $(this).addClass('active');
+        });
+
+        $('#calendarviewbtn button').click(function () {
+            $('#calendarviewbtn button.active').removeClass('active');
+            $(this).addClass("active");
+
+        });
+
+    </script>

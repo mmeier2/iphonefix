@@ -21,3 +21,24 @@
  body{
      padding: 70px;
  }
+
+ .appointmentrow {
+     margin-left: 0px;
+ }
+
+ .submission {
+     text-align:center;
+ }
+
+ #applicationform {
+     margin-bottom:0px;
+ }
+
+ input.emptyfield {
+     border-color :red;
+     outline-color:red;
+ }
+
+ #appointmenterror {
+     margin-top: 15px;
+ }

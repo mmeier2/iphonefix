@@ -233,6 +233,100 @@ namespace iphonefix
 		}
 
 		#endregion
-	}
+
+        #region Database Retrieval Methods
+        public static List<string> GetAllAppointments()
+        {
+            List<string> resultList = new List<string>();
+
+            //Encrypting data for storage in the database
+
+
+            SqlTransaction transaction;
+
+            using (SqlConnection connection = ConnectToDatabase())
+            {
+                try
+                {
+                    connection.Open();
+                }
+                catch (Exception)
+                {
+                    resultList.Add("error");
+                    return resultList;
+                }
+
+
+                SqlCommand command = connection.CreateCommand();
+
+                transaction = connection.BeginTransaction("Getting Item Names");
+
+                command.Connection = connection;
+                command.Transaction = transaction;
+
+                try
+                {
+
+
+                    string querycall = string.Format("EXEC [dbo].[GetItemNames] '{0}'", SocialConnectGuid);
+                    command.CommandText = querycall;
+
+                    SqlDataReader reader = command.ExecuteReader();
+
+                    while (reader.Read())
+                    {
+
+
+
+                        if (!reader.IsDBNull(reader.GetOrdinal("DefectName")))
+                        {
+                            resultList.Add(Decrypt(reader.GetString(reader.GetOrdinal("DefectName"))));
+                        }
+                        else
+                            resultList.Add("");
+
+                        if (!reader.IsDBNull(reader.GetOrdinal("FeatureName")))
+                        {
+                            resultList.Add(Decrypt(reader.GetString(reader.GetOrdinal("FeatureName"))));
+                        }
+                        else
+                            resultList.Add("");
+                        if (!reader.IsDBNull(reader.GetOrdinal("TaskName")))
+                        {
+                            resultList.Add(Decrypt(reader.GetString(reader.GetOrdinal("TaskName"))));
+                        }
+                        else
+                            resultList.Add("");
+
+                        if (!reader.IsDBNull(reader.GetOrdinal("IncidentName")))
+                        {
+                            resultList.Add(Decrypt(reader.GetString(reader.GetOrdinal("IncidentName"))));
+                        }
+                        else
+                            resultList.Add("");
+                    }
+
+                    return resultList;
+
+                }
+                catch (Exception)
+                {
+                    try
+                    {
+                        transaction.Rollback();
+                        resultList.Add("error");
+                        return resultList;
+                    }
+                    catch (Exception)
+                    {
+                        resultList.Add("error");
+                        return resultList;
+                    }
+                }
+            }
+        }
+
+        #endregion
+    }
 
 }

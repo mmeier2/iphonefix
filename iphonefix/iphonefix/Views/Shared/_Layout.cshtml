@@ -5,13 +5,14 @@
     <meta name="viewport" content="width=device-width" />
     <title>@ViewBag.Title</title>
    
-    @Scripts.Render("~/bundles/modernizr")
+        @Scripts.Render("~/bundles/modernizr")
     @Styles.Render("~/Content/bootstrap")
     @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/jqueryval")
     @Scripts.Render("~/bundles/knockout")
     @Scripts.Render("~/bundles/bootstrap")
     @Scripts.Render("~/bundles/iFoneFix")
-     @Styles.Render("~/Content/css")
+    
 
    <script type="text/javascript" src="~/Scripts/toastr.min.js">
    </script>
@@ -19,15 +20,17 @@
      <script type="text/javascript" src="~/Scripts/date.js">
    </script>
     <link href="~/Content/toastr.min.css" rel="stylesheet" type="text/css" />
-    <link rel="stylesheet" href="~/Content/bootstrap.min.css" type="text/css">
     <link rel="stylesheet" href="~/Content/calendar.css" type="text/css">
+
+     @Styles.Render("~/Content/css")
 </head>
 
 <body data-spy="scroll" data-target="#masternavbar">
     <div class="navbar navbar-inverse navbar-fixed-top" id="masternavbar">
     <div class="navbar-inner borderOverride">
-        <a class="navbar-brand active" href="#" id="navbarlabel">iFoneFix</a>
+        
         <ul id="navbarlinks" class="nav navbar-nav">
+            <li><a class="navbar-brand active" href="#" id="navbarlabel">iFoneFix</a></li>
             <li id="Calendarlink"><a href="#calenderSection">Calendar</a></li>
         </ul>
         
